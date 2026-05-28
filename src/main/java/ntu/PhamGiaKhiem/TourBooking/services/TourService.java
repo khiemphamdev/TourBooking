@@ -50,6 +50,30 @@ public class TourService {
 
         return tourRepository.save(tour);
     }
+    
+    @Transactional
+    public Tour updateTour(Long id, Tour updatedTourData, Long departureLocationId, Long destinationLocationId) {
+        // 1. Kiểm tra xem Tour cần sửa có tồn tại không
+        Tour existingTour = tourRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy tour với ID: " + id));
+
+        // 2. Tìm và cập nhật lại địa điểm đi / điểm đến mới (nếu có thay đổi)
+        Location departure = locationRepository.findById(departureLocationId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy địa điểm đi"));
+        Location destination = locationRepository.findById(destinationLocationId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy địa điểm đến"));
+
+        // 3. Cập nhật các thông tin cơ bản của Tour
+        existingTour.setTitle(updatedTourData.getTitle());
+        existingTour.setDescription(updatedTourData.getDescription());
+        existingTour.setBasePrice(updatedTourData.getBasePrice());
+        existingTour.setImageUrl(updatedTourData.getImageUrl());
+        existingTour.setDepartureLocation(departure);
+        existingTour.setDestinationLocation(destination);
+  
+        // 6. Lưu lại vào Database (JPA sẽ tự động phát hiện thay đổi và sinh câu lệnh UPDATE)
+        return tourRepository.save(existingTour);
+    }
 
     @Transactional
     public void deleteTour(Long id) {

@@ -25,6 +25,7 @@ public class Location {
     @OneToMany(mappedBy = "destinationLocation")
     private List<Tour> destinationTours;
 
+    public Location() {}
 	public Location(Long id, String name, String description, List<Tour> departureTours, List<Tour> destinationTours) {
 		super();
 		this.id = id;

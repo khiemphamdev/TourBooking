@@ -16,4 +16,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     // Lấy danh sách các đơn hàng theo trạng thái (Dành cho Admin duyệt đơn)
     List<Booking> findByStatus(BookingStatus status);
+    
 }

@@ -28,4 +28,64 @@ public class TourItinerary {
     @ManyToOne
     @JoinColumn(name = "tour_id", nullable = false)
     private Tour tour;
+
+	public TourItinerary(Long id, Integer dayNumber, String title, String content, String imageUrl, Tour tour) {
+		super();
+		this.id = id;
+		this.dayNumber = dayNumber;
+		this.title = title;
+		this.content = content;
+		this.imageUrl = imageUrl;
+		this.tour = tour;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getDayNumber() {
+		return dayNumber;
+	}
+
+	public void setDayNumber(Integer dayNumber) {
+		this.dayNumber = dayNumber;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public Tour getTour() {
+		return tour;
+	}
+
+	public void setTour(Tour tour) {
+		this.tour = tour;
+	}
+    
+    
 }

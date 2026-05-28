@@ -55,6 +55,7 @@ public class Tour {
 		this.itineraries = itineraries;
 		this.schedules = schedules;
 	}
+	public Tour() {}
 	public Long getId() {
 		return id;
 	}

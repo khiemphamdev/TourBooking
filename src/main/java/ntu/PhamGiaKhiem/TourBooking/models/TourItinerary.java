@@ -38,6 +38,7 @@ public class TourItinerary {
 		this.imageUrl = imageUrl;
 		this.tour = tour;
 	}
+	public TourItinerary() {}
 
 	public Long getId() {
 		return id;

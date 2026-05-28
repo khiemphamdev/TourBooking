@@ -25,6 +25,10 @@ public class TourItineraryService {
     private TourItineraryRepository itineraryRepository;
     private TourRepository tourRepository;
 
+    public TourItinerary getItineraryById(Long itineraryId) {
+        return itineraryRepository.findById(itineraryId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy chi tiết lịch trình với ID: " + itineraryId));
+    }
     public List<TourItinerary> getItinerariesByTourId(Long tourId) {
         if (!tourRepository.existsById(tourId)) {
             throw new RuntimeException("Không tìm thấy tour với ID: " + tourId);

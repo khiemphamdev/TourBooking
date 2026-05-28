@@ -34,6 +34,10 @@ public class TourSchedule {
 		this.tour = tour;
 	}
 
+	public TourSchedule() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getId() {
 		return id;
 	}

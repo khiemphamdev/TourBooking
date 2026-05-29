@@ -22,9 +22,10 @@ public class config {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/register", "/home", "/css/**", "/js/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .requestMatchers("/register", "/home","/css/**", "/js/**").permitAll()
+                .requestMatchers("/admin/**").permitAll()
+//                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().permitAll()
             )
             .formLogin(form -> form
                 .loginPage("/login")

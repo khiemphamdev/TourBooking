@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TourViệt - Hệ thống Đặt Tour Du Lịch Trực Tuyến</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand { font-weight: 800; letter-spacing: 1px; }
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920') no-repeat center center/cover;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        .search-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .tour-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tour-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .tour-card img {
+            height: 220px;
+            object-fit: cover;
+        }
+        .footer { background-color: #1e293b; color: #cbd5e1; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand text-primary" th:href="@{/}">
+                <i class="fa-solid fa-plane-departure me-2"></i>TOURVIỆT
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-span"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-3">
+                    <li class="nav-item"><a class="nav-link active fw-bold" th:href="@{/}">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="#">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="#">Tin tức du lịch</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="#" class="btn btn-outline-primary btn-sm px-3">Đăng nhập</a>
+                    <a th:href="@{/admin/tours}" class="btn btn-dark btn-sm px-3"><i class="fa-solid fa-user-gear me-1"></i> Trang Admin</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section text-center text-md-start">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h1 class="display-4 fw-bold mb-3">Khám Phá Việt Nam <br>Theo Cách Của Bạn</h1>
+                    <p class="lead">Đặt tour du lịch chất lượng cao, giá ưu đãi. Trải nghiệm trọn vẹn hành trình cùng đội ngũ hướng dẫn viên chuyên nghiệp.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="search-box p-4 text-dark text-start">
+                        <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-magnifying-glass me-2"></i>Tìm kiếm tour phù hợp</h5>
+                        <form action="#" method="GET">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-secondary">Từ khóa tìm kiếm</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fa-solid fa-search text-muted"></i></span>
+                                    <input type="text" name="keyword" class="form-control border-start-0" placeholder="Nhập tên tour, điểm đến...">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-bold text-secondary">Điểm khởi hành</label>
+                                    <select class="form-select">
+                                        <option value="" selected>Tất cả điểm đi</option>
+                                        <option th:each="loc : ${locations}" th:value="${loc.id}" th:text="${loc.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-bold text-secondary">Điểm đến lý tưởng</label>
+                                    <select class="form-select">
+                                        <option value="" selected>Tất cả điểm đến</option>
+                                        <option th:each="loc : ${locations}" th:value="${loc.id}" th:text="${loc.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2.5 mt-2 fw-bold">Tìm kiếm ngay</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark mb-2">Các Tour Du Lịch Bán Chạy Nhất</h2>
+            <p class="text-muted">Lên kế hoạch hành trình lý tưởng và tận hưởng kỳ nghỉ của bạn cùng người thân</p>
+            <div class="mx-auto bg-primary" style="height: 3px; width: 60px; border-radius: 2px;"></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4" th:each="t : ${tours}">
+                <div class="card h-100 tour-card bg-white">
+                    <div class="position-relative">
+                        <img th:src="${t.imageUrl != null ? t.imageUrl : 'https://via.placeholder.com/600x400'}" class="card-img-top" alt="Tour Image">
+                        <span class="position-absolute top-0 end-0 bg-success text-white m-3 px-3 py-1 rounded-pill small fw-bold" th:text="${t.destinationLocation.name}">Nha Trang</span>
+                    </div>
+                    <div class="card-body p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center gap-1 text-muted small mb-2">
+                                <i class="fa-solid fa-location-dot text-danger me-1"></i>
+                                <span th:text="${t.departureLocation.name}">Hà Nội</span>
+                                <i class="fa-solid fa-arrow-right mx-1 small text-secondary"></i>
+                                <span class="text-dark fw-bold" th:text="${t.destinationLocation.name}">Nha Trang</span>
+                            </div>
+                            <h5 class="card-title fw-bold text-dark mb-2" th:text="${t.title}">Tên Tour</h5>
+                            <p class="card-text text-muted small" th:text="${#strings.abbreviate(t.description, 90)}">Mô tả ngắn gọn về hành trình du lịch...</p>
+                        </div>
+                        
+                        <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">Giá chỉ từ</small>
+                                <span class="text-primary fw-bold fs-5" th:text="${#numbers.formatDecimal(t.basePrice, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-primary px-3 btn-sm rounded-pill fw-bold">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 text-center py-5 text-muted" th:if="${#lists.isEmpty(tours)}">
+                <i class="fa-solid fa-umbrella-beach fa-3x text-secondary mb-3"></i>
+                <p>Hiện tại hệ thống đang cập nhật danh sách tour mới. Quý khách vui lòng quay lại sau!</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer py-5 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="text-white fw-bold mb-3"><i class="fa-solid fa-plane-departure me-2"></i>TOURVIỆT</h5>
+                    <p class="small text-muted">Hệ thống cung cấp dịch vụ lữ hành, đặt tour trực tuyến hàng đầu Việt Nam. Mang lại trải nghiệm tuyệt vời cho mọi hành trình.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-white fw-bold mb-3">Liên hệ hỗ trợ</h5>
+                    <ul class="list-unstyled small gap-2 d-flex flex-column">
+                        <li><i class="fa-solid fa-phone me-2 text-primary"></i> Hotline: 1900 xxxx</li>
+                        <li><i class="fa-solid fa-envelope me-2 text-primary"></i> Email: support@tourviet.com</li>
+                        <li><i class="fa-solid fa-location-dot me-2 text-primary"></i> Địa chỉ: Nha Trang, Khánh Hòa</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-white fw-bold mb-3">Đăng ký nhận tin</h5>
+                    <p class="small text-muted">Nhận ngay thông tin các chương trình khuyến mãi, giảm giá tour sớm nhất.</p>
+                    <div class="input-group input-group-sm">
+                        <input type="email" class="form-control" placeholder="Nhập email của bạn...">
+                        <button class="btn btn-primary" type="button">Gửi</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="text-center small text-muted">
+                &copy; 2026 TOURVIỆT. Bảo lưu mọi quyền. Phát triển trên nền tảng Spring Boot & Thymeleaf.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

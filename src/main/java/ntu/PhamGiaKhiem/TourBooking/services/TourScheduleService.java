@@ -1,5 +1,6 @@
 package ntu.PhamGiaKhiem.TourBooking.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,9 @@ import java.util.List;
 
 public class TourScheduleService {
 
+	@Autowired
     private  TourScheduleRepository scheduleRepository;
+	@Autowired
     private  TourRepository tourRepository;
 
     // Lấy tất cả lịch khởi hành của một tour (Cả trong quá khứ lẫn tương lai)

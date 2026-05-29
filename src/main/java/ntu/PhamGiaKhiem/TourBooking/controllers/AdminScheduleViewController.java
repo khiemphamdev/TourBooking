@@ -1,5 +1,6 @@
 package ntu.PhamGiaKhiem.TourBooking.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,9 @@ import ntu.PhamGiaKhiem.TourBooking.services.TourService;
 @RequestMapping("/admin/schedules")
 public class AdminScheduleViewController {
 
+	@Autowired
     private TourScheduleService scheduleService;
+	@Autowired
     private TourService tourService;
 
     // 1. Quản lý danh sách ngày khởi hành của một Tour

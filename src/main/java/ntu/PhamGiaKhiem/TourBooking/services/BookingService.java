@@ -1,5 +1,6 @@
 package ntu.PhamGiaKhiem.TourBooking.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +18,11 @@ import java.util.List;
 @Service
 public class BookingService {
 
+	@Autowired
     private  BookingRepository bookingRepository;
+	@Autowired
     private  TourScheduleRepository tourScheduleRepository;
+	@Autowired
     private  UserRepository userRepository;
 
     @Transactional

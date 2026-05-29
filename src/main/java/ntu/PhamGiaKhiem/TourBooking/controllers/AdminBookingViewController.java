@@ -1,5 +1,6 @@
 package ntu.PhamGiaKhiem.TourBooking.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import ntu.PhamGiaKhiem.TourBooking.services.BookingService;
 
 public class AdminBookingViewController {
 
+	@Autowired
     private BookingService bookingService;
 
     // 1. Hiển thị toàn bộ hóa đơn đặt tour hiện có trên hệ thống

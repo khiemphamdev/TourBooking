@@ -1,5 +1,6 @@
 package ntu.PhamGiaKhiem.TourBooking.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ntu.PhamGiaKhiem.TourBooking.models.Location;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class LocationService {
 
+	@Autowired
     private LocationRepository locationRepository;
 
     public List<Location> getAllLocations() {

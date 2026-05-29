@@ -28,6 +28,12 @@ public class TourService {
         return tourRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy tour với ID: " + id));
     }
+    public List<Tour> searchTours(String keyword, Long departureId, Long destinationId) {
+        if (keyword != null && keyword.trim().isEmpty()) {
+            keyword = null;
+        }
+        return tourRepository.searchTours(keyword, departureId, destinationId);
+    }
 
     public List<Tour> searchToursByTitle(String keyword) {
         return tourRepository.findByTitleContainingIgnoreCase(keyword);

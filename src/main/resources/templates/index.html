@@ -82,22 +82,33 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label small fw-bold text-secondary">Điểm khởi hành</label>
-                                    <select class="form-select">
-                                        <option value="" selected>Tất cả điểm đi</option>
-                                        <option th:each="loc : ${locations}" th:value="${loc.id}" th:text="${loc.name}"></option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label small fw-bold text-secondary">Điểm đến lý tưởng</label>
-                                    <select class="form-select">
-                                        <option value="" selected>Tất cả điểm đến</option>
-                                        <option th:each="loc : ${locations}" th:value="${loc.id}" th:text="${loc.name}"></option>
-                                    </select>
-                                </div>
-                            </div>
+    <div class="col-md-6 mb-3">
+        <label class="form-label small fw-bold text-secondary">Điểm khởi hành</label>
+        <select name="departureId" class="form-select">
+            <option value="" selected>Tất cả điểm đi</option>
+            <option th:each="loc : ${locations}" 
+                    th:value="${loc.id}" 
+                    th:text="${loc.name}"
+                    th:selected="${loc.id == selectedDepartureId}"></option>
+        </select>
+    </div>
+    
+    <div class="col-md-6 mb-3">
+        <label class="form-label small fw-bold text-secondary">Điểm đến lý tưởng</label>
+        <select name="destinationId" class="form-select">
+            <option value="" selected>Tất cả điểm đến</option>
+            <option th:each="loc : ${locations}" 
+                    th:value="${loc.id}" 
+                    th:text="${loc.name}"
+                    th:selected="${loc.id == selectedDestinationId}"></option>
+        </select>
+    </div>
+</div>
+                            <div class="text-center mt-2" th:if="${selectedKeyword != null || selectedDepartureId != null || selectedDestinationId != null}">
+    <a th:href="@{/}" class="text-decoration-none small text-danger"><i class="fa-solid fa-rotate-left"></i> Xóa bộ lọc</a>
+</div>
                             <button type="submit" class="btn btn-primary w-100 py-2.5 mt-2 fw-bold">Tìm kiếm ngay</button>
+                            
                         </form>
                     </div>
                 </div>

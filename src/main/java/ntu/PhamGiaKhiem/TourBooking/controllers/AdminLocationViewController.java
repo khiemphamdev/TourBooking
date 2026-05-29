@@ -1,5 +1,6 @@
 package ntu.PhamGiaKhiem.TourBooking.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import ntu.PhamGiaKhiem.TourBooking.services.LocationService;
 
 public class AdminLocationViewController {
 
+	@Autowired
     private LocationService locationService;
 
     // 1. Xem danh sách địa điểm

@@ -1,5 +1,6 @@
 package ntu.PhamGiaKhiem.TourBooking.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,9 @@ import ntu.PhamGiaKhiem.TourBooking.services.TourService;
 
 public class AdminItineraryViewController {
 
+	@Autowired
     private  TourItineraryService itineraryService;
+	@Autowired
     private  TourService tourService;
 
     // 1. Xem lịch trình chi tiết của một Tour cụ thể

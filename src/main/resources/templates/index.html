@@ -147,7 +147,7 @@
                                 <small class="text-muted d-block">Giá chỉ từ</small>
                                 <span class="text-primary fw-bold fs-5" th:text="${#numbers.formatDecimal(t.basePrice, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
                             </div>
-                            <a href="#" class="btn btn-outline-primary px-3 btn-sm rounded-pill fw-bold">Xem chi tiết</a>
+                            <a th:href="@{/tours/{id}(id=${t.id})}" class="btn btn-outline-primary px-3 btn-sm rounded-pill fw-bold">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>

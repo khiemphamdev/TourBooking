@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${tour.title} + ' - Chi tiết Tour'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; }
+        .tour-banner {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        /* Style cho Timeline lịch trình */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            border-left: 2px dashed #0d6efd;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 30px;
+        }
+        .timeline-marker {
+            position: absolute;
+            left: -41px;
+            top: 0;
+            background: #fff;
+            border: 3px solid #0d6efd;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+        }
+        .itinerary-img {
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .sticky-sidebar {
+            position: sticky;
+            top: 90px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" th:href="@{/}">
+                <i class="fa-solid fa-plane-departure me-2"></i>TOURVIỆT
+            </a>
+            <a th:href="@{/}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Quay lại</a>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row g-4">
+            
+            <div class="col-lg-8">
+                <img th:src="${tour.imageUrl != null ? tour.imageUrl : 'https://via.placeholder.com/800x450'}" class="tour-banner mb-4" alt="Tour Banner">
+
+                <h1 class="fw-bold text-dark mb-3" th:text="${tour.title}">Tên Tour Du Lịch</h1>
+                <div class="d-flex flex-wrap gap-3 mb-4 text-muted border-bottom pb-3">
+                    <div><i class="fa-solid fa-map-location-dot text-primary me-2"></i>Hành trình: <strong class="text-dark">[[${tour.departureLocation.name}]] <i class="fa-solid fa-arrow-right mx-1 small"></i> [[${tour.destinationLocation.name}]]</strong></div>
+                    <div><i class="fa-solid fa-money-bill-wave text-success me-2"></i>Giá gốc: <strong class="text-primary" th:text="${#numbers.formatDecimal(tour.basePrice, 0, 'COMMA', 0, 'POINT')} + ' đ'"></strong></div>
+                </div>
+
+                <div class="bg-white p-4 rounded-3 shadow-sm mb-4">
+                    <h4 class="fw-bold mb-3"><i class="fa-solid fa-circle-info text-primary me-2"></i>Tổng quan chuyến đi</h4>
+                    <p style="white-space: pre-line;" class="text-secondary" th:text="${tour.description}">Mô tả tổng quan hành trình chuyến đi...</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-3 shadow-sm">
+                    <h4 class="fw-bold mb-4"><i class="fa-solid fa-route text-primary me-2"></i>Chương trình chi tiết</h4>
+                    
+                    <div class="timeline" th:if="${not #lists.isEmpty(itineraries)}">
+                        <div class="timeline-item" th:each="iti : ${itineraries}">
+                            <div class="timeline-marker"></div>
+                            <h5 class="fw-bold text-dark">
+                                <span class="text-primary me-2">Ngày [[${iti.dayNumber}]]:</span>
+                                <span th:text="${iti.title}">Tiêu đề ngày đi</span>
+                            </h5>
+                            <img th:if="${iti.imageUrl != null && !iti.imageUrl.isEmpty()}" 
+                                 th:src="${iti.imageUrl}" class="img-fluid itinerary-img mb-2" alt="Ảnh ngày đi">
+                            <p class="text-secondary mt-2 mb-3" style="white-space: pre-line;" th:text="${iti.content}">Nội dung hoạt động chi tiết ngày đi...</p>
+                            
+                            
+                        </div>
+                    </div>
+
+                    <div class="text-center py-4 text-muted" th:if="${#lists.isEmpty(itineraries)}">
+                        <i class="fa-solid fa-spinner fa-spin mb-2"></i> Lịch trình chi tiết đang được cập nhật.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-3 sticky-sidebar">
+                    <div class="card-header bg-primary text-white p-3 text-center">
+                        <h5 class="mb-0 fw-bold"><i class="fa-solid fa-calendar-check me-2"></i>Lịch Khởi Hành & Giá Vé</h5>
+                    </div>
+                    <div class="card-body p-4 bg-white">
+                        
+                        <form action="#" method="POST">
+                            <label class="form-label fw-bold mb-2 text-dark">Chọn ngày khởi hành phù hợp:</label>
+                            
+                            <div class="d-flex flex-column gap-2 mb-4" style="max-height: 250px; overflow-y: auto;">
+                                <div th:each="sch : ${schedules}" class="border rounded p-3 position-relative">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="scheduleId" th:id="'sch-' + ${sch.id}" th:value="${sch.id}" required>
+                                        <label class="form-check-label w-100 ms-1" th:for="'sch-' + ${sch.id}">
+                                            <div class="fw-bold text-dark">Khởi hành: [[${sch.departureDate}]]</div>
+                                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                                <small class="text-muted">Còn trống: <strong class="text-success">[[${sch.availableSeats}]] chỗ</strong></small>
+                                                <span class="text-danger fw-bold" th:text="${#numbers.formatDecimal(sch.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="text-center py-3 text-muted border border-dashed rounded" th:if="${#lists.isEmpty(schedules)}">
+                                    Hiện tại chưa có lịch khởi hành mới cho Tour này.
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-danger w-100 py-3 fw-bold fs-5 rounded-3" th:disabled="${#lists.isEmpty(schedules)}">
+                                <i class="fa-solid fa-cart-shopping me-2"></i>ĐẶT TOUR NGAY
+                            </button>
+                        </form>
+                        
+                        <div class="mt-3 text-center">
+                            <small class="text-muted"><i class="fa-solid fa-headset me-1"></i> Hỗ trợ khẩn cấp: <strong>1900 xxxx</strong></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

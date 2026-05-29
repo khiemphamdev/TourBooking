@@ -51,4 +51,41 @@ public class AdminTourViewController {
         tourService.deleteTour(id);
         return "redirect:/admin/tours";
     }
+    
+ // Thêm vào trong class AdminTourViewController
+
+ // 5. Hiển thị form chỉnh sửa Tour (Nạp sẵn dữ liệu cũ)
+ @GetMapping("/edit/{id}")
+ public String showEditTourForm(@NonNull @PathVariable Long id, Model model) {
+     // Lấy thông tin Tour cũ từ Database
+     Tour tour = tourService.getTourById(id);
+     model.addAttribute("tour", tour);
+     
+     // Nạp danh sách địa điểm để Admin có thể chọn lại điểm đi/đến nếu muốn
+     model.addAttribute("locations", locationService.getAllLocations());
+     
+     return "admin/tour/edit"; // Trả về file admin/tour/edit.html
+ }
+
+ // 6. Tiếp nhận dữ liệu Form chỉnh sửa gửi lên và cập nhật vào DB
+ @PostMapping("/edit/{id}")
+ public String handleUpdateTour(
+         @NonNull @PathVariable Long id,
+         @ModelAttribute("tour") Tour tourDetails,
+         @RequestParam Long departureLocationId,
+         @RequestParam Long destinationLocationId) {
+     
+     // Tận dụng lại Logic Service: Tìm tour cũ ra để cập nhật thông tin mới thay đổi
+     Tour existingTour = tourService.getTourById(id);
+     
+     existingTour.setTitle(tourDetails.getTitle());
+     existingTour.setBasePrice(tourDetails.getBasePrice());
+     existingTour.setImageUrl(tourDetails.getImageUrl());
+     existingTour.setDescription(tourDetails.getDescription());
+     
+     // Lưu cập nhật (Hàm createTour trong service đã có logic mapping lại Location rất chuẩn)
+     tourService.createTour(existingTour, departureLocationId, destinationLocationId);
+     
+     return "redirect:/admin/tours"; // Sửa xong quay về trang danh sách
+ }
 }

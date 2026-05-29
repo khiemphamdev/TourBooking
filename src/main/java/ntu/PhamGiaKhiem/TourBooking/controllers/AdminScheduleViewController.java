@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import ntu.PhamGiaKhiem.TourBooking.models.Tour;
 import ntu.PhamGiaKhiem.TourBooking.models.TourSchedule;
 import ntu.PhamGiaKhiem.TourBooking.services.TourScheduleService;
 import ntu.PhamGiaKhiem.TourBooking.services.TourService;
@@ -30,8 +31,15 @@ public class AdminScheduleViewController {
     // 2. Hiển thị form tạo ngày khởi hành mới
     @GetMapping("/tour/{tourId}/create")
     public String showCreateForm(@NonNull @PathVariable Long tourId, Model model) {
-        model.addAttribute("schedule", new TourSchedule());
+    	Tour tour = tourService.getTourById(tourId);
+        
+        TourSchedule schedule = new TourSchedule();
+ 
+        schedule.setPrice(tour.getBasePrice()); 
+     
+        model.addAttribute("schedule", schedule);
         model.addAttribute("tourId", tourId);
+        
         return "admin/schedule/create";
     }
 
@@ -42,12 +50,11 @@ public class AdminScheduleViewController {
         return "redirect:/admin/schedules/tour/" + tourId;
     }
 
-    // 4. Xử lý xóa lịch khởi hành
+ // 4. Xử lý xóa lịch khởi hành
     @GetMapping("/delete/{id}")
     public String deleteSchedule(@NonNull @PathVariable Long id) {
-        TourSchedule schedule = scheduleService.updateSchedule(id, new TourSchedule());
+        TourSchedule schedule = scheduleService.getScheduleById(id);
         Long tourId = schedule.getTour().getId();
-        
         scheduleService.deleteSchedule(id);
         return "redirect:/admin/schedules/tour/" + tourId;
     }

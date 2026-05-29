@@ -66,4 +66,9 @@ public class TourScheduleService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy lịch khởi hành với ID: " + scheduleId));
         scheduleRepository.delete(schedule);
     }
+
+    public TourSchedule getScheduleById(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy lịch khởi hành với ID: " + scheduleId));
+    }
 }

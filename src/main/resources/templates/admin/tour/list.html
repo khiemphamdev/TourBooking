@@ -85,6 +85,9 @@
                                     </a>
                                 </td>
                                 <td class="text-end">
+                                <a th:href="@{/admin/tours/edit/{id}(id=${t.id})}" class="btn btn-sm btn-outline-warning text-dark me-1">
+        <i class="fa-solid fa-pen-to-square"></i> Sửa
+    </a>
                                     <a th:href="@{/admin/tours/delete/{id}(id=${t.id})}" 
                                        class="btn btn-soft-danger btn-sm text-danger" 
                                        onclick="return confirm('Bạn có chắc chắn muốn xóa tour này kèm tất cả dữ liệu lịch trình?')">
